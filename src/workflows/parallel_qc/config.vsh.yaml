@@ -1,0 +1,38 @@
+functionality:
+  name: parallel_qc
+  namespace: workflows
+  description: |
+    A workflow for running fastqc (in parallel)
+
+  arguments:
+    - name: "--input"
+      alternatives: [ "-i" ]
+      type: file
+      required: true
+      multiple: true
+      multiple_sep: ";"
+      description: fastq files
+      example: file1.tar.gz;file2.tar.gz 
+    - name: "--output"
+      alternatives: [ "-o" ]
+      type: file
+      direction: output
+      required: true
+      description: Output directory to write reports to.
+      example: qc/
+
+  resources:
+    - type: nextflow_script
+      path: main.nf
+      entrypoint: run_wf
+
+  dependencies: 
+    - name: qc/fastqc
+      repository:
+        name: op
+        type: github
+        repo: openpipelines-bio/openpipeline
+        tag: 0.12.1
+
+platforms:
+  - type: nextflow

@@ -1,0 +1,11 @@
+viash_version: 0.8.0
+
+source: src
+target: target
+
+config_mods: |
+  .functionality.version := 'dev'
+  .functionality.requirements.commands := ['ps']
+  .platforms[.type == 'docker'].namespace_separator := '_'
+  .platforms[.type == 'nextflow'].directives.tag := '$id'
+  .platforms[.type == 'nextflow'].auto.simplifyOutput := false
