@@ -2,7 +2,8 @@ functionality:
   name: parallel_qc
   namespace: workflows
   description: |
-    A workflow for running fastqc (in parallel)
+    A workflow for running fastqc (in parallel) using a
+    components from OpenPipelines.
 
   arguments:
     - name: "--input"

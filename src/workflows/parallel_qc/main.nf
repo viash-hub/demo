@@ -4,34 +4,45 @@ workflow run_wf {
 
   main:
     output_ch = input_ch
+
+      // Expand the input wildcard, i.e. convert the input channel
+      //  `[ _, [ input: [ <fastqfiles> ] ] ]`
+      // into seperate events of the format:
+      //  `[ <filename>, [ input: <fastqfile> ] ]`
+      // 
+      // This involves some Nextflow and Groovy magic.
       | flatMap{ id, state ->
           state.input
             .collect{ f ->
               [ 
-                file(f).name.minus(".fastq.gz"),
-                [ input: file(f),
-                  _meta: [ id: id ]
-                ]
+                file(f).name.minus(".fastq.gz"),  // remove the trail
+                [ input: file(f) ]                // file expands the glob
               ]
             }
         }
+
+      // Run the fastqc component on every fastq file in the channel
       | fastqc.run(
-        auto: [ publish: true ],
-        fromState: { id, state ->
+          // Publish the results
+          auto: [ publish: true ],
+          // Pass the appropriate arguments to the fastqc module
+          fromState: { id, state ->
             [
-              mode: "files",
-              input: state.input,
+              mode: "files",         // required argument for fastqc
+              input: state.input,    // each individual fastq file
             ]
           },
-        toState: { id, out, state ->
-            [
-              output: out.output,
-              _meta: state._meta
-            ]
-          }
-      )
+          // Define how the output of the fastqc module should be handled
+          toState: { id, result, state ->
+            [ output: result.output ]
+          }  // add the output to state.output
+        )
+
+      // Make sure the output and input channel ID's match
+      // and the output arguments are passed.
+      // Note: There are other ways to handle this with Viash
+      | map{ id, state -> [ "run", state ] }
 
   emit:
     output_ch
-      | map{ }
 }

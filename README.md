@@ -1,6 +1,20 @@
 
 Example:
 
+First of all, build the workflow component and fetch the dependencies:
+
+```sh
+❯ viash ns build
+temporaryFolder: /tmp/viash_hub_repo16588771316891105298 uri: https://github.com/openpipelines-bio/openpipeline.git
+Cloning into '.'...
+checkout out: List(git, checkout, tags/0.12.1, --, .) 0
+Creating temporary 'target/.build.yaml' file for op as this file seems to be missing.
+Exporting parallel_qc (workflows) =nextflow=> /Users/toni/code/projects/viash-hub/demo/target/nextflow/workflows/parallel_qc
+All 1 configs built successfully
+```
+
+Then, run:
+
 ```sh
 ❯ nextflow run target/nextflow/workflows/parallel_qc/main.nf \
     --input "testData/*" \
