@@ -3,7 +3,7 @@ Example:
 
 ```sh
 ❯ nextflow run target/nextflow/workflows/parallel_qc/main.nf \
-    --input testData/\* \
+    --input "testData/*" \
     --publish_dir output \
     -with-docker
 
