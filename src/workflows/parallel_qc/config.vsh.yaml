@@ -34,6 +34,10 @@ functionality:
         type: github
         repo: openpipelines-bio/openpipeline
         tag: 0.12.1
+    - name: utils/transpose
+      repository:
+        name: local
+        type: local
 
 platforms:
   - type: nextflow
