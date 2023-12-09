@@ -11,16 +11,33 @@ We will fetch test data from this repository: <https://github.com/hartwigmedical
 git clone https://github.com/hartwigmedical/testdata testData 
 ```
 
-# Run directly from ~Github~ ViashHub
+# Run directly from ViashHub
+
+In order to fetch the workflow from Viash Hub, the following should be added to `~/.nextflow/scm`:
+
+```
+providers {
+
+   vsh {
+    platform = 'gitlab'
+    server = "viash-hub.com"
+  }
+}
+```
+
+Then, with the data fetched above present under `testData`, we can run fastqc in parallel on all 32 fastq files:
 
 ```sh
 https://github.com/viash-io/viash_hub_demo \
     -main-script target/nextflow/workflows/parallel_qc/main.nf \
+    -hub vsh \
     -r main \
     --input "testData/**/*.fastq.gz"  \
     --publish_dir output \
     -with-docker
 ```
+
+The output will be stored under `output` as indicated by the `--publish_dir` argument.
 
 # Run from a local copy
 
