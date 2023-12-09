@@ -17,8 +17,7 @@ In order to fetch the workflow from Viash Hub, the following should be added to 
 
 ```
 providers {
-
-   vsh {
+  vsh {
     platform = 'gitlab'
     server = "viash-hub.com"
   }
@@ -28,16 +27,18 @@ providers {
 Then, with the data fetched above present under `testData`, we can run fastqc in parallel on all 32 fastq files:
 
 ```sh
-https://github.com/viash-io/viash_hub_demo \
-    -main-script target/nextflow/workflows/parallel_qc/main.nf \
+nextflow run data-intuitive/viash_hub_demo \
     -hub vsh \
+    -main-script target/nextflow/workflows/parallel_qc/main.nf \
     -r main \
-    --input "testData/**/*.fastq.gz"  \
+    --input "testData/**/*.fastq.gz" \
     --publish_dir output \
     -with-docker
 ```
 
 The output will be stored under `output` as indicated by the `--publish_dir` argument.
+
+![](material/demo_vsh.gif)
 
 # Run from a local copy
 
