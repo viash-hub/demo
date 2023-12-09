@@ -69,4 +69,4 @@ executor >  local (64)
 [46/d0870d] process > parallel_qc:publishStatesSimpleWf:publishStatesProc (TESTY_H7YRLADXX_S1_L002_R1_001.fastq.gz)           [100%] 32 of 32 ✔
 ```
 
-
+![](material/demo_lcl.gif)
