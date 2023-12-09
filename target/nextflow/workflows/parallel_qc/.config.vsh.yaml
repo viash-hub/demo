@@ -1,0 +1,138 @@
+functionality:
+  name: "parallel_qc"
+  namespace: "workflows"
+  version: "dev"
+  arguments:
+  - type: "file"
+    name: "--input"
+    alternatives:
+    - "-i"
+    description: "fastq files"
+    info: null
+    example:
+    - "file1.tar.gz;file2.tar.gz"
+    must_exist: true
+    create_parent: true
+    required: true
+    direction: "input"
+    multiple: true
+    multiple_sep: ";"
+    dest: "par"
+  - type: "file"
+    name: "--output"
+    alternatives:
+    - "-o"
+    description: "Output directory to write reports to."
+    info: null
+    example:
+    - "qc"
+    must_exist: true
+    create_parent: true
+    required: true
+    direction: "output"
+    multiple: false
+    multiple_sep: ":"
+    dest: "par"
+  resources:
+  - type: "nextflow_script"
+    path: "main.nf"
+    is_executable: true
+    entrypoint: "run_wf"
+  description: "A workflow for running fastqc (in parallel) using a\ncomponents from\
+    \ OpenPipelines.\n"
+  info: null
+  status: "enabled"
+  requirements:
+    commands:
+    - "ps"
+  dependencies:
+  - name: "qc/fastqc"
+    repository:
+      type: "github"
+      name: "op"
+      repo: "openpipelines-bio/openpipeline"
+      tag: "0.12.1"
+      localPath: "/tmp/viash_hub_repo13400598624284277236"
+    foundConfigPath: "/tmp/viash_hub_repo13400598624284277236/target/nextflow/qc/fastqc/.config.vsh.yaml"
+    configInfo:
+      functionalityName: "fastqc"
+      git_remote: "https://github.com/openpipelines-bio/openpipeline"
+      viash_version: "0.7.5"
+      config: "/home/runner/work/openpipeline/openpipeline/src/qc/fastqc/config.vsh.yaml"
+      functionalityNamespace: "qc"
+      output: "/home/runner/work/openpipeline/openpipeline/target/nextflow/qc/fastqc"
+      platform: "nextflow"
+      git_commit: "b41a65886f61959c7f83f84a0569c3da1d7a2856"
+      executable: "/home/runner/work/openpipeline/openpipeline/target/nextflow/qc/fastqc/fastqc"
+    writtenPath: "/Users/toni/code/projects/viash-hub/demo/target/dependencies/github/openpipelines-bio/openpipeline/0.12.1/nextflow/qc/fastqc"
+  - name: "utils/transpose"
+    repository:
+      type: "local"
+      name: "local"
+      localPath: ""
+    foundConfigPath: "/Users/toni/code/projects/viash-hub/demo/src/utils/transpose/config.vsh.yaml"
+    configInfo:
+      functionalityName: "transpose"
+      git_tag: ""
+      git_remote: "https://github.com/viash-io/viash_hub_demo.git"
+      viash_version: "0.8.0"
+      config: "/Users/toni/code/projects/viash-hub/demo/src/utils/transpose/config.vsh.yaml"
+      functionalityNamespace: "utils"
+      output: ""
+      platform: ""
+      git_commit: "2727c0fcf1300329e4c5d3dd9a900fca2f6c9af5"
+      executable: "/nextflow/utils/transpose/main.nf"
+    writtenPath: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose"
+  set_wd_to_resources_dir: false
+platforms:
+- type: "nextflow"
+  id: "nextflow"
+  directives:
+    tag: "$id"
+  auto:
+    simplifyInput: true
+    simplifyOutput: false
+    transcript: false
+    publish: false
+  config:
+    labels:
+      mem1gb: "memory = 1.GB"
+      mem2gb: "memory = 2.GB"
+      mem4gb: "memory = 4.GB"
+      mem8gb: "memory = 8.GB"
+      mem16gb: "memory = 16.GB"
+      mem32gb: "memory = 32.GB"
+      mem64gb: "memory = 64.GB"
+      mem128gb: "memory = 128.GB"
+      mem256gb: "memory = 256.GB"
+      mem512gb: "memory = 512.GB"
+      mem1tb: "memory = 1.TB"
+      mem2tb: "memory = 2.TB"
+      mem4tb: "memory = 4.TB"
+      mem8tb: "memory = 8.TB"
+      mem16tb: "memory = 16.TB"
+      mem32tb: "memory = 32.TB"
+      mem64tb: "memory = 64.TB"
+      mem128tb: "memory = 128.TB"
+      mem256tb: "memory = 256.TB"
+      mem512tb: "memory = 512.TB"
+      cpu1: "cpus = 1"
+      cpu2: "cpus = 2"
+      cpu5: "cpus = 5"
+      cpu10: "cpus = 10"
+      cpu20: "cpus = 20"
+      cpu50: "cpus = 50"
+      cpu100: "cpus = 100"
+      cpu200: "cpus = 200"
+      cpu500: "cpus = 500"
+      cpu1000: "cpus = 1000"
+  debug: false
+  container: "docker"
+info:
+  config: "/Users/toni/code/projects/viash-hub/demo/src/workflows/parallel_qc/config.vsh.yaml"
+  platform: "nextflow"
+  output: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/workflows/parallel_qc"
+  executable: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/workflows/parallel_qc/main.nf"
+  viash_version: "0.8.0"
+  git_commit: "2727c0fcf1300329e4c5d3dd9a900fca2f6c9af5"
+  git_remote: "https://github.com/viash-io/viash_hub_demo.git"
