@@ -2845,7 +2845,7 @@ meta = [
     "platform" : "nextflow",
     "output" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose",
     "viash_version" : "0.8.0",
-    "git_commit" : "2727c0fcf1300329e4c5d3dd9a900fca2f6c9af5",
+    "git_commit" : "1f9cf7387c98fbbb91a217fffa5cc9ca523b6a8e",
     "git_remote" : "https://github.com/viash-io/viash_hub_demo.git"
   }
 }'''))

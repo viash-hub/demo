@@ -2791,13 +2791,13 @@ meta = [
       {
         "name" : "qc/fastqc",
         "repository" : {
-          "type" : "github",
+          "type" : "vsh",
           "name" : "op",
           "repo" : "openpipelines-bio/openpipeline",
-          "tag" : "0.12.1",
-          "localPath" : "/tmp/viash_hub_repo13400598624284277236"
+          "tag" : "0.11.0",
+          "localPath" : "/tmp/viash_hub_repo12480927605892862117"
         },
-        "foundConfigPath" : "/tmp/viash_hub_repo13400598624284277236/target/nextflow/qc/fastqc/.config.vsh.yaml",
+        "foundConfigPath" : "/tmp/viash_hub_repo12480927605892862117/target/nextflow/qc/fastqc/.config.vsh.yaml",
         "configInfo" : {
           "functionalityName" : "fastqc",
           "git_remote" : "https://github.com/openpipelines-bio/openpipeline",
@@ -2806,10 +2806,10 @@ meta = [
           "functionalityNamespace" : "qc",
           "output" : "/home/runner/work/openpipeline/openpipeline/target/nextflow/qc/fastqc",
           "platform" : "nextflow",
-          "git_commit" : "b41a65886f61959c7f83f84a0569c3da1d7a2856",
+          "git_commit" : "125f0afa4ac570f5c381f84dd0bef0ad16c9865b",
           "executable" : "/home/runner/work/openpipeline/openpipeline/target/nextflow/qc/fastqc/fastqc"
         },
-        "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/dependencies/github/openpipelines-bio/openpipeline/0.12.1/nextflow/qc/fastqc"
+        "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/dependencies/vsh/openpipelines-bio/openpipeline/0.11.0/nextflow/qc/fastqc"
       },
       {
         "name" : "utils/transpose",
@@ -2828,7 +2828,7 @@ meta = [
           "functionalityNamespace" : "utils",
           "output" : "",
           "platform" : "",
-          "git_commit" : "2727c0fcf1300329e4c5d3dd9a900fca2f6c9af5",
+          "git_commit" : "1f9cf7387c98fbbb91a217fffa5cc9ca523b6a8e",
           "executable" : "/nextflow/utils/transpose/main.nf"
         },
         "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose"
@@ -2892,7 +2892,7 @@ meta = [
     "platform" : "nextflow",
     "output" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/workflows/parallel_qc",
     "viash_version" : "0.8.0",
-    "git_commit" : "2727c0fcf1300329e4c5d3dd9a900fca2f6c9af5",
+    "git_commit" : "1f9cf7387c98fbbb91a217fffa5cc9ca523b6a8e",
     "git_remote" : "https://github.com/viash-io/viash_hub_demo.git"
   }
 }'''))
@@ -2900,7 +2900,7 @@ meta = [
 
 // resolve dependencies dependencies (if any)
 meta["root_dir"] = getRootDir()
-include { fastqc } from "${meta.root_dir}/dependencies/github/openpipelines-bio/openpipeline/0.12.1/nextflow/qc/fastqc/main.nf"
+include { fastqc } from "${meta.root_dir}/dependencies/vsh/openpipelines-bio/openpipeline/0.11.0/nextflow/qc/fastqc/main.nf"
 include { transpose } from "${meta.resources_dir}/../../../nextflow/utils/transpose/main.nf"
 
 // inner workflow
