@@ -38,7 +38,7 @@ nextflow run data-intuitive/viash_hub_demo \
 
 The output will be stored under `output` as indicated by the `--publish_dir` argument.
 
-![](material/demo_vsh.gif)
+![](material/run_from_vsh.gif)
 
 # Run from a local copy
 
@@ -69,4 +69,3 @@ executor >  local (64)
 [46/d0870d] process > parallel_qc:publishStatesSimpleWf:publishStatesProc (TESTY_H7YRLADXX_S1_L002_R1_001.fastq.gz)           [100%] 32 of 32 ✔
 ```
 
-![](material/run_from_vsh.gif)
