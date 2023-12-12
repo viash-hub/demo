@@ -1,0 +1,82 @@
+#!/opt/homebrew/bin/expect -f
+
+set send_human {0.1 0.3 1 0.05 2}
+set CTRLC \003
+set CTRLU \021
+set timeout -1
+
+proc expect_prompt {} {
+    expect "❯ "
+}
+
+proc my_echo {msg} {
+    send -h "echo $msg"
+    send "\r"
+}
+
+proc clear {} {
+    send -- "clear\r"
+    expect_prompt
+}
+
+proc run_command {cmd} {
+    send -h -- "$cmd"
+    send -- "\r"
+    expect_prompt
+}
+
+proc partial_command {cmd} {
+    send -- "$cmd"
+    send -- "\r"
+}
+
+proc send_keystroke_to_interactive_process {key {addl_sleep 2}} {
+    send "$key"
+    expect -timeout 1
+    sleep $addl_sleep
+}
+
+# Start asciinema session, result is stored in /tmp/...
+spawn asciinema rec -c "bash -i"
+
+# Create temporary directory
+expect_prompt
+run_command "# "
+run_command "# Let's create an empty directory..."
+run_command "# "
+run_command "TMP=`mktemp -d -p /tmp`"
+run_command "cd \$TMP"
+run_command "pwd"
+
+# Clone repo
+run_command "# "
+run_command "# Let's fetch some fastq files..."
+run_command "# "
+run_command "git clone https://github.com/hartwigmedical/testdata testData"
+
+# Get info on test data
+run_command "# "
+run_command "# There are 32 fastq files"
+run_command "# "
+run_command "find testData -type f -iname '*.fastq.gz' \| wc -w"
+
+# Run pipeline from Viash Hub
+run_command "# "
+run_command "# Now we can run the pipeline directly from Viash Hub..."
+run_command "# "
+partial_command "nextflow run data-intuitive/viash_hub_demo \\"
+partial_command "  -main-script target/nextflow/workflows/parallel_qc/main.nf \\"
+partial_command "  -r main \\"
+partial_command "  -with-docker \\"
+partial_command "  -hub vsh \\"
+partial_command "  --input 'testData/**/*.fastq.gz' \\"
+partial_command "  --publish_dir output"
+expect_prompt
+
+# Show the results
+run_command "# "
+run_command "# Let's see what happened..."
+run_command "# "
+run_command "tree -L 1 output/"
+
+send "exit"
