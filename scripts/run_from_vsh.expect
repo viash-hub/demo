@@ -19,6 +19,12 @@ proc clear {} {
     expect_prompt
 }
 
+proc show_text {cmd} {
+    send -h -- "# $cmd"
+    send -- "\r"
+    expect_prompt
+}
+
 proc run_command {cmd} {
     send -h -- "$cmd"
     send -- "\r"
@@ -41,29 +47,29 @@ spawn asciinema rec -c "bash -i"
 
 # Create temporary directory
 expect_prompt
-run_command "# "
-run_command "# Let's create an empty directory..."
-run_command "# "
+show_text ""
+show_text "Let's create an empty directory..."
+show_text ""
 run_command "TMP=`mktemp -d -p /tmp`"
 run_command "cd \$TMP"
 run_command "pwd"
 
 # Clone repo
-run_command "# "
-run_command "# Let's fetch some fastq files..."
-run_command "# "
+show_text ""
+show_text "Let's fetch some fastq files..."
+show_text ""
 run_command "git clone https://github.com/hartwigmedical/testdata testData"
 
 # Get info on test data
-run_command "# "
-run_command "# There are 32 fastq files"
-run_command "# "
+show_text ""
+show_text "There are 32 fastq files"
+show_text ""
 run_command "find testData -type f -iname '*.fastq.gz' \| wc -w"
 
 # Run pipeline from Viash Hub
-run_command "# "
-run_command "# Now we can run the pipeline directly from Viash Hub..."
-run_command "# "
+show_text ""
+show_text "Now we can run the pipeline directly from Viash Hub..."
+show_text ""
 partial_command "nextflow run data-intuitive/viash_hub_demo \\"
 partial_command "  -main-script target/nextflow/workflows/parallel_qc/main.nf \\"
 partial_command "  -r main \\"
@@ -74,9 +80,9 @@ partial_command "  --publish_dir output"
 expect_prompt
 
 # Show the results
-run_command "# "
-run_command "# Let's see what happened..."
-run_command "# "
+show_text ""
+show_text "Let's see what happened..."
+show_text ""
 run_command "tree -L 1 output/"
 
 send "exit"
