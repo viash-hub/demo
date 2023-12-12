@@ -38,7 +38,7 @@ nextflow run data-intuitive/viash_hub_demo \
 
 The output will be stored under `output` as indicated by the `--publish_dir` argument.
 
-![](material/run_from_vsh.gif)
+![Screencast of fetching test data and running the pipeline from Viash Hub directly](material/run_from_vsh.gif)
 
 # Run from a local copy
 
