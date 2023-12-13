@@ -62,10 +62,6 @@ Now, run fastqc on all fastq files that can be found under in the `testData` dir
     --input "testData/**/*.fastq.gz"  \
     --publish_dir output \
     -with-docker
-N E X T F L O W  ~  version 22.10.7
-Launching `target/nextflow/workflows/parallel_qc/main.nf` [hungry_allen] DSL2 - revision: ce88dd9a3a
-executor >  local (64)
-[db/2de3bc] process > parallel_qc:run_wf:fastqc:fastqc_process (TESTY_H7YRLADXX_S1_L002_R1_001.fastq.gz)                      [100%] 32 of 32 ✔
-[46/d0870d] process > parallel_qc:publishStatesSimpleWf:publishStatesProc (TESTY_H7YRLADXX_S1_L002_R1_001.fastq.gz)           [100%] 32 of 32 ✔
 ```
 
+![Screencast of fetching test data and running the pipeline from a local copy](material/run_from_local.gif)

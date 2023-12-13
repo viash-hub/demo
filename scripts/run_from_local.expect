@@ -1,0 +1,159 @@
+#!/opt/homebrew/bin/expect -f
+
+set send_human {0.1 0.3 1 0.05 2}
+
+set CTRLC \003
+set CTRLU \021
+set SPACE \032
+set SHFTV \086
+set ESC \027
+
+set timeout -1
+
+proc expect_prompt {} {
+    expect "❯ "
+}
+
+proc my_echo {msg} {
+    send -h "echo $msg"
+    send "\r"
+}
+
+proc clear {} {
+    send -- "clear\r"
+    expect_prompt
+}
+
+proc show_text {cmd} {
+    send -h -- "# $cmd"
+    send -- "\r"
+    expect_prompt
+}
+
+proc run_command {cmd} {
+    send -h -- "$cmd"
+    send -- "\r"
+    expect_prompt
+}
+
+proc just_run_command {cmd} {
+    send -h -- "$cmd"
+    sleep 1
+    send -- "\r"
+    expect -timeout 1
+}
+
+proc partial_command {cmd} {
+    send -- "$cmd"
+    send -- "\r"
+}
+
+# Send a keystroke but wait a bit for the viewer to catch up
+proc send_keystroke_to_interactive_process {key {addl_sleep 1}} {
+    send -- $key
+    expect -timeout 1
+    sleep $addl_sleep
+}
+
+# Start asciinema session, result is stored in /tmp/...
+spawn asciinema rec -c "bash -i"
+
+#### DEV
+# just_run_command "cd /tmp/tmp.TKbMtZI2nH"
+# expect_prompt
+#### END DEV
+
+# Create temporary directory
+expect_prompt
+show_text ""
+show_text "Let's create an empty directory..."
+show_text ""
+run_command "TMP=`mktemp -d -p /tmp`"
+run_command "cd \$TMP"
+run_command "pwd"
+
+# Clone repo
+show_text ""
+show_text "We clone the pipeline project..."
+show_text ""
+run_command "git clone https://viash-hub.com/data-intuitive/viash_hub_demo.git ."
+
+# Clone repo
+show_text ""
+show_text "What's here?"
+show_text ""
+
+show_text "First the config file for the pipeline component:"
+sleep 2
+
+# Open vim and look at config
+just_run_command "lvim src/workflows/parallel_qc/config.vsh.yaml"
+# go to name and highlight
+send_keystroke_to_interactive_process gg
+send_keystroke_to_interactive_process j
+send_keystroke_to_interactive_process V
+send_keystroke_to_interactive_process $CTRLC
+# go to arguments and highlight
+send_keystroke_to_interactive_process 6j
+send_keystroke_to_interactive_process V
+send_keystroke_to_interactive_process 15j
+send_keystroke_to_interactive_process $CTRLC
+# go to dependencies and highlight
+send_keystroke_to_interactive_process 8j
+send_keystroke_to_interactive_process V
+send_keystroke_to_interactive_process 5j
+send_keystroke_to_interactive_process $CTRLC
+# quit vim
+send -h -- :q!\r
+expect_prompt
+
+show_text "Then the pipeline code itself:"
+sleep 2
+
+# Open vim and look at main.nf file
+just_run_command "lvim src/workflows/parallel_qc/main.nf"
+# go to transpose
+send_keystroke_to_interactive_process gg
+send_keystroke_to_interactive_process 9j
+send_keystroke_to_interactive_process V
+send_keystroke_to_interactive_process 4j
+send_keystroke_to_interactive_process $CTRLC
+# go to fastqc
+send_keystroke_to_interactive_process 2j
+send_keystroke_to_interactive_process V
+send_keystroke_to_interactive_process 14j
+send_keystroke_to_interactive_process $CTRLC
+# quit vim
+send -h -- :q!\r
+expect_prompt
+
+# Clone repo
+show_text ""
+show_text "Let's fetch some fastq files..."
+show_text ""
+run_command "git clone https://github.com/hartwigmedical/testdata testData"
+
+# Get info on test data
+# show_text ""
+# show_text "There are 32 fastq files"
+# show_text ""
+# run_command "find testData -type f -iname '*.fastq.gz' \| wc -w"
+
+# Run pipeline from Viash Hub
+show_text ""
+show_text "Now we can run the pipeline directly from Viash Hub..."
+show_text ""
+partial_command "nextflow run . \\"
+partial_command "  -main-script target/nextflow/workflows/parallel_qc/main.nf \\"
+partial_command "  -with-docker \\"
+partial_command "  --input 'testData/**/*.fastq.gz' \\"
+partial_command "  --publish_dir output"
+expect_prompt
+
+# Show the results
+# show_text ""
+# show_text "Let's see what happened..."
+# show_text ""
+# run_command "tree -L 1 output/"
+
+send "exit"
