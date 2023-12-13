@@ -1,0 +1,30 @@
+functionality:
+  name: aggregate
+  namespace: utils
+  description: |
+    Aggregate all input files/dirs into one output dir
+    for downstream processes.
+
+  arguments:
+    - name: "--input"
+      alternatives: [ "-i" ]
+      type: file
+      required: true
+      multiple: true
+      multiple_sep: ";"
+      description: Input files or directories with ';' as delimiter
+      example: file1;file2;... 
+    - name: "--output"
+      alternatives: [ "-o" ]
+      type: file
+      direction: output
+      required: true
+      description: One directory containing all input files/dirs
+      example: report/
+
+  resources:
+    - type: bash_script
+      path: script.sh
+
+platforms:
+  - type: nextflow

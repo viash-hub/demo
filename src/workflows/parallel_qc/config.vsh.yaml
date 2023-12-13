@@ -3,7 +3,8 @@ functionality:
   namespace: workflows
   description: |
     A workflow for running fastqc (in parallel) using a
-    components from OpenPipelines.
+    components from OpenPipelines and aggregating those
+    in one report using multiqc.
 
   arguments:
     - name: "--input"
@@ -29,15 +30,21 @@ functionality:
 
   dependencies: 
     - name: qc/fastqc
-      repository:
-        name: op
-        type: vsh
-        repo: openpipelines-bio/openpipeline
-        tag: 0.11.0
+      repository: openpipeline
+    - name: qc/multiqc
+      repository: openpipeline
     - name: utils/transpose
-      repository:
-        name: local
-        type: local
+      repository: local
+    - name: utils/aggregate
+      repository: local
+
+  repositories:
+    - name: openpipeline
+      type: vsh
+      repo: openpipelines-bio/openpipeline
+      tag: 0.11.0
+    - name: local
+      type: local
 
 platforms:
   - type: nextflow

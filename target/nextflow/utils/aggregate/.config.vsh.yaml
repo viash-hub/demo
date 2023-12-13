@@ -1,5 +1,5 @@
 functionality:
-  name: "transpose"
+  name: "aggregate"
   namespace: "utils"
   version: "dev"
   arguments:
@@ -7,7 +7,7 @@ functionality:
     name: "--input"
     alternatives:
     - "-i"
-    description: "Input files with ';' as delimiter"
+    description: "Input files or directories with ';' as delimiter"
     info: null
     example:
     - "file1;file2;..."
@@ -22,10 +22,10 @@ functionality:
     name: "--output"
     alternatives:
     - "-o"
-    description: "output files, one per Channel event"
+    description: "One directory containing all input files/dirs"
     info: null
     example:
-    - "file1"
+    - "report"
     must_exist: true
     create_parent: true
     required: true
@@ -34,14 +34,11 @@ functionality:
     multiple_sep: ":"
     dest: "par"
   resources:
-  - type: "nextflow_script"
-    path: "main.nf"
+  - type: "bash_script"
+    path: "script.sh"
     is_executable: true
-    entrypoint: "run_wf"
-  description: "Expand the input wildcard, i.e. convert the input channel with one\
-    \ event\n  `[ _, [ input: <list_of_files> ] ]`\ninto a channel with seperate events\
-    \ of the format:\n  `[ <filename>, [ input: <file> ] ]`\nThis involves some Nextflow\
-    \ and Groovy magic.\n"
+  description: "Aggregate all input files/dirs into one output dir\nfor downstream\
+    \ processes.\n"
   info: null
   status: "enabled"
   requirements:
@@ -93,10 +90,10 @@ platforms:
   debug: false
   container: "docker"
 info:
-  config: "/Users/toni/code/projects/viash-hub/demo/src/utils/transpose/config.vsh.yaml"
+  config: "/Users/toni/code/projects/viash-hub/demo/src/utils/aggregate/config.vsh.yaml"
   platform: "nextflow"
-  output: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose"
-  executable: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose/main.nf"
+  output: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/aggregate"
+  executable: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/aggregate/aggregate"
   viash_version: "0.8.0"
   git_commit: "6644e7858d3d41559f13f131b1639bec0094cb2b"
   git_remote: "https://github.com/viash-io/viash_hub_demo.git"

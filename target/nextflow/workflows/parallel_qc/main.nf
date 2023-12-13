@@ -2780,7 +2780,7 @@ meta = [
         "entrypoint" : "run_wf"
       }
     ],
-    "description" : "A workflow for running fastqc (in parallel) using a\ncomponents from OpenPipelines.\n",
+    "description" : "A workflow for running fastqc (in parallel) using a\ncomponents from OpenPipelines and aggregating those\nin one report using multiqc.\n",
     "status" : "enabled",
     "requirements" : {
       "commands" : [
@@ -2792,12 +2792,12 @@ meta = [
         "name" : "qc/fastqc",
         "repository" : {
           "type" : "vsh",
-          "name" : "op",
+          "name" : "openpipeline",
           "repo" : "openpipelines-bio/openpipeline",
           "tag" : "0.11.0",
-          "localPath" : "/tmp/viash_hub_repo13096771733796363856"
+          "localPath" : "/tmp/viash_hub_repo12882178238455004964"
         },
-        "foundConfigPath" : "/tmp/viash_hub_repo13096771733796363856/target/nextflow/qc/fastqc/.config.vsh.yaml",
+        "foundConfigPath" : "/tmp/viash_hub_repo12882178238455004964/target/nextflow/qc/fastqc/.config.vsh.yaml",
         "configInfo" : {
           "functionalityName" : "fastqc",
           "git_remote" : "https://github.com/openpipelines-bio/openpipeline",
@@ -2810,6 +2810,29 @@ meta = [
           "executable" : "/home/runner/work/openpipeline/openpipeline/target/nextflow/qc/fastqc/fastqc"
         },
         "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/dependencies/vsh/openpipelines-bio/openpipeline/0.11.0/nextflow/qc/fastqc"
+      },
+      {
+        "name" : "qc/multiqc",
+        "repository" : {
+          "type" : "vsh",
+          "name" : "openpipeline",
+          "repo" : "openpipelines-bio/openpipeline",
+          "tag" : "0.11.0",
+          "localPath" : "/tmp/viash_hub_repo12882178238455004964"
+        },
+        "foundConfigPath" : "/tmp/viash_hub_repo12882178238455004964/target/nextflow/qc/multiqc/.config.vsh.yaml",
+        "configInfo" : {
+          "functionalityName" : "multiqc",
+          "git_remote" : "https://github.com/openpipelines-bio/openpipeline",
+          "viash_version" : "0.7.5",
+          "config" : "/home/runner/work/openpipeline/openpipeline/src/qc/multiqc/config.vsh.yaml",
+          "functionalityNamespace" : "qc",
+          "output" : "/home/runner/work/openpipeline/openpipeline/target/nextflow/qc/multiqc",
+          "platform" : "nextflow",
+          "git_commit" : "125f0afa4ac570f5c381f84dd0bef0ad16c9865b",
+          "executable" : "/home/runner/work/openpipeline/openpipeline/target/nextflow/qc/multiqc/multiqc"
+        },
+        "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/dependencies/vsh/openpipelines-bio/openpipeline/0.11.0/nextflow/qc/multiqc"
       },
       {
         "name" : "utils/transpose",
@@ -2828,10 +2851,46 @@ meta = [
           "functionalityNamespace" : "utils",
           "output" : "",
           "platform" : "",
-          "git_commit" : "7663869e391de3fd96b9f2164632d3da755619e4",
+          "git_commit" : "6644e7858d3d41559f13f131b1639bec0094cb2b",
           "executable" : "/nextflow/utils/transpose/main.nf"
         },
         "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose"
+      },
+      {
+        "name" : "utils/aggregate",
+        "repository" : {
+          "type" : "local",
+          "name" : "local",
+          "localPath" : ""
+        },
+        "foundConfigPath" : "/Users/toni/code/projects/viash-hub/demo/src/utils/aggregate/config.vsh.yaml",
+        "configInfo" : {
+          "functionalityName" : "aggregate",
+          "git_tag" : "",
+          "git_remote" : "https://github.com/viash-io/viash_hub_demo.git",
+          "viash_version" : "0.8.0",
+          "config" : "/Users/toni/code/projects/viash-hub/demo/src/utils/aggregate/config.vsh.yaml",
+          "functionalityNamespace" : "utils",
+          "output" : "",
+          "platform" : "",
+          "git_commit" : "6644e7858d3d41559f13f131b1639bec0094cb2b",
+          "executable" : "/nextflow/utils/aggregate/main.nf"
+        },
+        "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/aggregate"
+      }
+    ],
+    "repositories" : [
+      {
+        "type" : "vsh",
+        "name" : "openpipeline",
+        "repo" : "openpipelines-bio/openpipeline",
+        "tag" : "0.11.0",
+        "localPath" : ""
+      },
+      {
+        "type" : "local",
+        "name" : "local",
+        "localPath" : ""
       }
     ],
     "set_wd_to_resources_dir" : false
@@ -2892,7 +2951,7 @@ meta = [
     "platform" : "nextflow",
     "output" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/workflows/parallel_qc",
     "viash_version" : "0.8.0",
-    "git_commit" : "7663869e391de3fd96b9f2164632d3da755619e4",
+    "git_commit" : "6644e7858d3d41559f13f131b1639bec0094cb2b",
     "git_remote" : "https://github.com/viash-io/viash_hub_demo.git"
   }
 }'''))
@@ -2901,7 +2960,9 @@ meta = [
 // resolve dependencies dependencies (if any)
 meta["root_dir"] = getRootDir()
 include { fastqc } from "${meta.root_dir}/dependencies/vsh/openpipelines-bio/openpipeline/0.11.0/nextflow/qc/fastqc/main.nf"
+include { multiqc } from "${meta.root_dir}/dependencies/vsh/openpipelines-bio/openpipeline/0.11.0/nextflow/qc/multiqc/main.nf"
 include { transpose } from "${meta.resources_dir}/../../../nextflow/utils/transpose/main.nf"
+include { aggregate } from "${meta.resources_dir}/../../../nextflow/utils/aggregate/main.nf"
 
 // inner workflow
 // user-provided Nextflow code
@@ -2916,30 +2977,51 @@ workflow run_wf {
       // into a multiple Channel events with one file.
       | transpose.run(
           fromState: [ "input": "input" ],
-          toState: [ "input": "output" ]
+          toState: [ "transpose_output": "output" ]
       )
 
       // Run the fastqc component on every fastq file in the channel
       | fastqc.run(
-          // Publish the results
-          auto: [ publish: true ],
           // Pass the appropriate arguments to the fastqc module
           fromState: { id, state ->
             [
               mode: "files",            // required argument for fastqc
-              input: state.input,       // each individual fastq file
+              input: state.transpose_output,       // each individual fastq file
             ]
           },
           // Define how the output of the fastqc module should be handled
-          toState: { id, result, state ->
-            [ output: result.output ]   // add the output to state.output
-          }  
+          toState: [ "fastqc_output": "output" ]   // add the output to state.output
+        )
+
+      // Aggregate all fastqc reports in one directory 
+      | toSortedList
+      | map{ lst -> 
+          [
+            "run",
+            [ list_fastqc_reports: lst.collect{ id, state -> state.fastqc_output }.join(";") ]
+          ]
+        }
+      | aggregate.run(
+          fromState: [ "input": "list_fastqc_reports" ],
+          toState: [ "aggregated_fastqc_reports": "output" ]
+        )
+
+      // Run multiqc
+      | multiqc.run(
+          // Publish the results
+          auto: [ publish: true ],
+          fromState: { id, state ->
+            [
+              input: state.aggregated_fastqc_reports,
+              output: "report"
+            ]
+          },
+          toState: [ "output": "output" ]
         )
 
   emit:
     output_ch
-      // Make sure Viash knows how to match up input and output channels
-      | map{ id, state -> [ id, state + [ _meta: [ join_id: "run" ] ] ] }
+      | map{ id, state -> [ id, [ output: state.output ] ] }
 }
 
 // inner workflow hook
