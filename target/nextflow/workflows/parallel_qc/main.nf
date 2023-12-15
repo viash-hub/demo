@@ -2795,9 +2795,9 @@ meta = [
           "name" : "openpipeline",
           "repo" : "openpipelines-bio/openpipeline",
           "tag" : "0.11.0",
-          "localPath" : "/tmp/viash_hub_repo12882178238455004964"
+          "localPath" : "/tmp/viash_hub_repo4260092395350782744"
         },
-        "foundConfigPath" : "/tmp/viash_hub_repo12882178238455004964/target/nextflow/qc/fastqc/.config.vsh.yaml",
+        "foundConfigPath" : "/tmp/viash_hub_repo4260092395350782744/target/nextflow/qc/fastqc/.config.vsh.yaml",
         "configInfo" : {
           "functionalityName" : "fastqc",
           "git_remote" : "https://github.com/openpipelines-bio/openpipeline",
@@ -2818,9 +2818,9 @@ meta = [
           "name" : "openpipeline",
           "repo" : "openpipelines-bio/openpipeline",
           "tag" : "0.11.0",
-          "localPath" : "/tmp/viash_hub_repo12882178238455004964"
+          "localPath" : "/tmp/viash_hub_repo4260092395350782744"
         },
-        "foundConfigPath" : "/tmp/viash_hub_repo12882178238455004964/target/nextflow/qc/multiqc/.config.vsh.yaml",
+        "foundConfigPath" : "/tmp/viash_hub_repo4260092395350782744/target/nextflow/qc/multiqc/.config.vsh.yaml",
         "configInfo" : {
           "functionalityName" : "multiqc",
           "git_remote" : "https://github.com/openpipelines-bio/openpipeline",
@@ -2851,7 +2851,7 @@ meta = [
           "functionalityNamespace" : "utils",
           "output" : "",
           "platform" : "",
-          "git_commit" : "6644e7858d3d41559f13f131b1639bec0094cb2b",
+          "git_commit" : "3f727729e09ddabb4837c492a8a6f2ee28cab531",
           "executable" : "/nextflow/utils/transpose/main.nf"
         },
         "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose"
@@ -2873,7 +2873,7 @@ meta = [
           "functionalityNamespace" : "utils",
           "output" : "",
           "platform" : "",
-          "git_commit" : "6644e7858d3d41559f13f131b1639bec0094cb2b",
+          "git_commit" : "3f727729e09ddabb4837c492a8a6f2ee28cab531",
           "executable" : "/nextflow/utils/aggregate/main.nf"
         },
         "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/aggregate"
@@ -2951,7 +2951,7 @@ meta = [
     "platform" : "nextflow",
     "output" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/workflows/parallel_qc",
     "viash_version" : "0.8.0",
-    "git_commit" : "6644e7858d3d41559f13f131b1639bec0094cb2b",
+    "git_commit" : "3f727729e09ddabb4837c492a8a6f2ee28cab531",
     "git_remote" : "https://github.com/viash-io/viash_hub_demo.git"
   }
 }'''))
