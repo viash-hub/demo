@@ -2795,9 +2795,9 @@ meta = [
           "name" : "openpipeline",
           "repo" : "openpipelines-bio/openpipeline",
           "tag" : "0.11.0",
-          "localPath" : "/tmp/viash_hub_repo4260092395350782744"
+          "localPath" : "/tmp/viash_hub_repo2391323424087695348"
         },
-        "foundConfigPath" : "/tmp/viash_hub_repo4260092395350782744/target/nextflow/qc/fastqc/.config.vsh.yaml",
+        "foundConfigPath" : "/tmp/viash_hub_repo2391323424087695348/target/nextflow/qc/fastqc/.config.vsh.yaml",
         "configInfo" : {
           "functionalityName" : "fastqc",
           "git_remote" : "https://github.com/openpipelines-bio/openpipeline",
@@ -2818,9 +2818,9 @@ meta = [
           "name" : "openpipeline",
           "repo" : "openpipelines-bio/openpipeline",
           "tag" : "0.11.0",
-          "localPath" : "/tmp/viash_hub_repo4260092395350782744"
+          "localPath" : "/tmp/viash_hub_repo2391323424087695348"
         },
-        "foundConfigPath" : "/tmp/viash_hub_repo4260092395350782744/target/nextflow/qc/multiqc/.config.vsh.yaml",
+        "foundConfigPath" : "/tmp/viash_hub_repo2391323424087695348/target/nextflow/qc/multiqc/.config.vsh.yaml",
         "configInfo" : {
           "functionalityName" : "multiqc",
           "git_remote" : "https://github.com/openpipelines-bio/openpipeline",
@@ -2851,7 +2851,7 @@ meta = [
           "functionalityNamespace" : "utils",
           "output" : "",
           "platform" : "",
-          "git_commit" : "3f727729e09ddabb4837c492a8a6f2ee28cab531",
+          "git_commit" : "366ced80478d0b495491a69bd9602f6a733a2b42",
           "executable" : "/nextflow/utils/transpose/main.nf"
         },
         "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose"
@@ -2873,7 +2873,7 @@ meta = [
           "functionalityNamespace" : "utils",
           "output" : "",
           "platform" : "",
-          "git_commit" : "3f727729e09ddabb4837c492a8a6f2ee28cab531",
+          "git_commit" : "366ced80478d0b495491a69bd9602f6a733a2b42",
           "executable" : "/nextflow/utils/aggregate/main.nf"
         },
         "writtenPath" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/aggregate"
@@ -2904,7 +2904,7 @@ meta = [
       },
       "auto" : {
         "simplifyInput" : true,
-        "simplifyOutput" : false,
+        "simplifyOutput" : true,
         "transcript" : false,
         "publish" : false
       },
@@ -2951,7 +2951,7 @@ meta = [
     "platform" : "nextflow",
     "output" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/workflows/parallel_qc",
     "viash_version" : "0.8.0",
-    "git_commit" : "3f727729e09ddabb4837c492a8a6f2ee28cab531",
+    "git_commit" : "366ced80478d0b495491a69bd9602f6a733a2b42",
     "git_remote" : "https://github.com/viash-io/viash_hub_demo.git"
   }
 }'''))
@@ -2975,22 +2975,13 @@ workflow run_wf {
 
       // Turn the Channel event with list of files
       // into a multiple Channel events with one file.
-      | transpose.run(
-          fromState: [ "input": "input" ],
-          toState: [ "transpose_output": "output" ]
-      )
+      | transpose
+
+      | take(2)
 
       // Run the fastqc component on every fastq file in the channel
       | fastqc.run(
-          // Pass the appropriate arguments to the fastqc module
-          fromState: { id, state ->
-            [
-              mode: "files",            // required argument for fastqc
-              input: state.transpose_output,       // each individual fastq file
-            ]
-          },
-          // Define how the output of the fastqc module should be handled
-          toState: [ "fastqc_output": "output" ]   // add the output to state.output
+          args: [ mode: "files" ],
         )
 
       // Aggregate all fastqc reports in one directory 
@@ -2998,30 +2989,27 @@ workflow run_wf {
       | map{ lst -> 
           [
             "run",
-            [ list_fastqc_reports: lst.collect{ id, state -> state.fastqc_output }.join(";") ]
+            [ input: lst.collect{ id, state -> state }.join(";") ]
           ]
         }
-      | aggregate.run(
-          fromState: [ "input": "list_fastqc_reports" ],
-          toState: [ "aggregated_fastqc_reports": "output" ]
-        )
+
+      | aggregate
 
       // Run multiqc
       | multiqc.run(
-          // Publish the results
-          auto: [ publish: true ],
-          fromState: { id, state ->
-            [
-              input: state.aggregated_fastqc_reports,
-              output: "report"
-            ]
-          },
-          toState: [ "output": "output" ]
+          auto: [
+            publish: true
+          ],
+          args: [ output: "report" ]
         )
+
+      | map{ id, state -> [ id, [ output: state ] ] }
+
+      | niceView()
 
   emit:
     output_ch
-      | map{ id, state -> [ id, [ output: state.output ] ] }
+      
 }
 
 // inner workflow hook
@@ -3045,7 +3033,7 @@ meta["defaults"] = [
   // auto settings
   auto: readJsonBlob('''{
   "simplifyInput" : true,
-  "simplifyOutput" : false,
+  "simplifyOutput" : true,
   "transcript" : false,
   "publish" : false
 }'''),

@@ -7,22 +7,13 @@ workflow run_wf {
 
       // Turn the Channel event with list of files
       // into a multiple Channel events with one file.
-      | transpose.run(
-          fromState: [ "input": "input" ],
-          toState: [ "transpose_output": "output" ]
-      )
+      | transpose
+
+      | take(2)
 
       // Run the fastqc component on every fastq file in the channel
       | fastqc.run(
-          // Pass the appropriate arguments to the fastqc module
-          fromState: { id, state ->
-            [
-              mode: "files",            // required argument for fastqc
-              input: state.transpose_output,       // each individual fastq file
-            ]
-          },
-          // Define how the output of the fastqc module should be handled
-          toState: [ "fastqc_output": "output" ]   // add the output to state.output
+          args: [ mode: "files" ]
         )
 
       // Aggregate all fastqc reports in one directory 
@@ -30,28 +21,25 @@ workflow run_wf {
       | map{ lst -> 
           [
             "run",
-            [ list_fastqc_reports: lst.collect{ id, state -> state.fastqc_output }.join(";") ]
+            [ input: lst.collect{ id, state -> state }.join(";") ]
           ]
         }
-      | aggregate.run(
-          fromState: [ "input": "list_fastqc_reports" ],
-          toState: [ "aggregated_fastqc_reports": "output" ]
-        )
+
+      | aggregate
 
       // Run multiqc
       | multiqc.run(
-          // Publish the results
-          auto: [ publish: true ],
-          fromState: { id, state ->
-            [
-              input: state.aggregated_fastqc_reports,
-              output: "report"
-            ]
-          },
-          toState: [ "output": "output" ]
+          auto: [
+            publish: true
+          ],
+          args: [ output: "report" ]
         )
+
+      | map{ id, state -> [ id, [ output: state ] ] }
+
+      | niceView()
 
   emit:
     output_ch
-      | map{ id, state -> [ id, [ output: state.output ] ] }
+      
 }

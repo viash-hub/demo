@@ -8,4 +8,5 @@ config_mods: |
   .functionality.requirements.commands := ['ps']
   .platforms[.type == 'docker'].namespace_separator := '_'
   .platforms[.type == 'nextflow'].directives.tag := '$id'
-  .platforms[.type == 'nextflow'].auto.simplifyOutput := false
+  .platforms[.type == 'nextflow'].auto.simplifyOutput := true
+  .platforms[.type == 'nextflow'].auto.simplifyInput := true

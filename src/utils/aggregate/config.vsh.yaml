@@ -27,4 +27,6 @@ functionality:
       path: script.sh
 
 platforms:
+  - type: docker
+    image: ubuntu:latest
   - type: nextflow

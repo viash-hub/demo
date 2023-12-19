@@ -2798,7 +2798,7 @@ meta = [
       },
       "auto" : {
         "simplifyInput" : true,
-        "simplifyOutput" : false,
+        "simplifyOutput" : true,
         "transcript" : false,
         "publish" : false
       },
@@ -2845,7 +2845,7 @@ meta = [
     "platform" : "nextflow",
     "output" : "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose",
     "viash_version" : "0.8.0",
-    "git_commit" : "3f727729e09ddabb4837c492a8a6f2ee28cab531",
+    "git_commit" : "366ced80478d0b495491a69bd9602f6a733a2b42",
     "git_remote" : "https://github.com/viash-io/viash_hub_demo.git"
   }
 }'''))
@@ -2901,7 +2901,7 @@ meta["defaults"] = [
   // auto settings
   auto: readJsonBlob('''{
   "simplifyInput" : true,
-  "simplifyOutput" : false,
+  "simplifyOutput" : true,
   "transcript" : false,
   "publish" : false
 }'''),
