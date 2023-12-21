@@ -102,8 +102,10 @@ platforms:
   entrypoint: []
   cmd: null
 info:
-  config: "/Users/toni/code/projects/viash-hub/workflow_utils/src/split/expand/config.vsh.yaml"
+  config: "/Users/toni/code/projects/viash-hub/vsh_utils/src/split/expand/config.vsh.yaml"
   platform: "nextflow"
-  output: "/Users/toni/code/projects/viash-hub/workflow_utils/target/nextflow/split/expand"
-  executable: "/Users/toni/code/projects/viash-hub/workflow_utils/target/nextflow/split/expand/main.nf"
-  viash_version: "0.8.2"
+  output: "/Users/toni/code/projects/viash-hub/vsh_utils/target/nextflow/split/expand"
+  executable: "/Users/toni/code/projects/viash-hub/vsh_utils/target/nextflow/split/expand/main.nf"
+  viash_version: "0.8.0"
+  git_commit: "f3f9b7865c72ac17c5607f1adf73caed07819521"
+  git_remote: "git@viash-hub.com:data-intuitive/vsh_utils.git"

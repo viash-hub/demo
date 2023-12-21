@@ -3,7 +3,7 @@ workflow run_wf {
     input_ch
 
   main:
-    output_ch = input_ch
+    fastqc_output = input_ch
 
       // Turn the Channel event with list of files
       // into a multiple Channel events with one file.
@@ -24,6 +24,7 @@ workflow run_wf {
           toState: { id, result, state -> result }
         )
 
+    output_ch = fastqc_output 
       // Aggregate all fastqc reports in one directory,
       // but first run our Nextflow toList wrapper
       | vsh_toList.run (

@@ -49,8 +49,8 @@ functionality:
       type: vsh
       repo: data-intuitive/vsh_utils
       tag: main
-    - name: local
-      type: local
+    # - name: local
+    #   type: local
 
 platforms:
   - type: nextflow
