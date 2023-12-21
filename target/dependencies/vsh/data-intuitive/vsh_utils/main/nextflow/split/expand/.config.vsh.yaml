@@ -1,6 +1,6 @@
 functionality:
-  name: "transpose"
-  namespace: "utils"
+  name: "expand"
+  namespace: "split"
   version: "dev"
   arguments:
   - type: "file"
@@ -92,11 +92,18 @@ platforms:
       cpu1000: "cpus = 1000"
   debug: false
   container: "docker"
+- type: "docker"
+  id: "docker"
+  image: "ubuntu:latest"
+  namespace_separator: "_"
+  resolve_volume: "Automatic"
+  chown: true
+  setup_strategy: "ifneedbepullelsecachedbuild"
+  entrypoint: []
+  cmd: null
 info:
-  config: "/Users/toni/code/projects/viash-hub/demo/src/utils/transpose/config.vsh.yaml"
+  config: "/Users/toni/code/projects/viash-hub/workflow_utils/src/split/expand/config.vsh.yaml"
   platform: "nextflow"
-  output: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose"
-  executable: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/transpose/main.nf"
-  viash_version: "0.8.0"
-  git_commit: "3f727729e09ddabb4837c492a8a6f2ee28cab531"
-  git_remote: "https://github.com/viash-io/viash_hub_demo.git"
+  output: "/Users/toni/code/projects/viash-hub/workflow_utils/target/nextflow/split/expand"
+  executable: "/Users/toni/code/projects/viash-hub/workflow_utils/target/nextflow/split/expand/main.nf"
+  viash_version: "0.8.2"

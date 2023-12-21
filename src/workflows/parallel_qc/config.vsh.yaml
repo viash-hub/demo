@@ -33,16 +33,22 @@ functionality:
       repository: openpipeline
     - name: qc/multiqc
       repository: openpipeline
-    - name: utils/transpose
-      repository: local
-    - name: utils/aggregate
-      repository: local
+    - name: split/expand
+      repository: vsh_utils
+    - name: join/vsh_toList
+      repository: vsh_utils
+    - name: join/assemble
+      repository: vsh_utils
 
   repositories:
     - name: openpipeline
       type: vsh
       repo: openpipelines-bio/openpipeline
       tag: 0.11.0
+    - name: vsh_utils
+      type: vsh
+      repo: data-intuitive/vsh_utils
+      tag: main
     - name: local
       type: local
 

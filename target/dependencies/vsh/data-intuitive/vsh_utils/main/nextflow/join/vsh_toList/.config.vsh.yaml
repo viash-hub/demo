@@ -1,44 +1,50 @@
 functionality:
-  name: "aggregate"
-  namespace: "utils"
+  name: "vsh_toList"
+  namespace: "join"
   version: "dev"
   arguments:
+  - type: "string"
+    name: "--id"
+    description: "ID of the output event"
+    info: null
+    required: true
+    direction: "input"
+    multiple: false
+    multiple_sep: ":"
+    dest: "par"
   - type: "file"
     name: "--input"
     alternatives:
     - "-i"
-    description: "Input files or directories with ';' as delimiter"
+    description: "Mutiple channel events to be combined under the output key"
     info: null
-    example:
-    - "file1;file2;..."
     must_exist: true
     create_parent: true
     required: true
     direction: "input"
-    multiple: true
+    multiple: false
     multiple_sep: ";"
     dest: "par"
   - type: "file"
     name: "--output"
     alternatives:
     - "-o"
-    description: "One directory containing all input files/dirs"
+    description: "Content of the output key in the output channel"
     info: null
-    example:
-    - "report"
     must_exist: true
     create_parent: true
     required: true
     direction: "output"
-    multiple: false
+    multiple: true
     multiple_sep: ":"
     dest: "par"
   resources:
-  - type: "bash_script"
-    path: "script.sh"
+  - type: "nextflow_script"
+    path: "main.nf"
     is_executable: true
-  description: "Aggregate all input files/dirs into one output dir\nfor downstream\
-    \ processes.\n"
+    entrypoint: "run_wf"
+  description: "A wrapper component for the Nextflow toList operator\nthat fits the\
+    \ Viash way of doing things.\n"
   info: null
   status: "enabled"
   requirements:
@@ -90,10 +96,8 @@ platforms:
   debug: false
   container: "docker"
 info:
-  config: "/Users/toni/code/projects/viash-hub/demo/src/utils/aggregate/config.vsh.yaml"
+  config: "/Users/toni/code/projects/viash-hub/workflow_utils/src/join/vsh_toList/config.vsh.yaml"
   platform: "nextflow"
-  output: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/aggregate"
-  executable: "/Users/toni/code/projects/viash-hub/demo/target/nextflow/utils/aggregate/aggregate"
-  viash_version: "0.8.0"
-  git_commit: "3f727729e09ddabb4837c492a8a6f2ee28cab531"
-  git_remote: "https://github.com/viash-io/viash_hub_demo.git"
+  output: "/Users/toni/code/projects/viash-hub/workflow_utils/target/nextflow/join/vsh_toList"
+  executable: "/Users/toni/code/projects/viash-hub/workflow_utils/target/nextflow/join/vsh_toList/main.nf"
+  viash_version: "0.8.2"

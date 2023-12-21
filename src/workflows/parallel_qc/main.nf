@@ -7,9 +7,9 @@ workflow run_wf {
 
       // Turn the Channel event with list of files
       // into a multiple Channel events with one file.
-      | transpose.run(
-          fromState: [ "input": "input" ],
-          toState: [ "transpose_output": "output" ]
+      | expand.run(
+          fromState: { id, state -> state },
+          toState: {id, result, state -> result }
       )
 
       // Run the fastqc component on every fastq file in the channel
@@ -17,25 +17,22 @@ workflow run_wf {
           // Pass the appropriate arguments to the fastqc module
           fromState: { id, state ->
             [
-              mode: "files",            // required argument for fastqc
-              input: state.transpose_output,       // each individual fastq file
+              mode: "files",             // required argument for fastqc
+              input: state.output,       // each individual fastq file
             ]
           },
-          // Define how the output of the fastqc module should be handled
-          toState: [ "fastqc_output": "output" ]   // add the output to state.output
+          toState: { id, result, state -> result }
         )
 
-      // Aggregate all fastqc reports in one directory 
-      | toSortedList
-      | map{ lst -> 
-          [
-            "run",
-            [ list_fastqc_reports: lst.collect{ id, state -> state.fastqc_output }.join(";") ]
-          ]
-        }
-      | aggregate.run(
-          fromState: [ "input": "list_fastqc_reports" ],
-          toState: [ "aggregated_fastqc_reports": "output" ]
+      // Aggregate all fastqc reports in one directory,
+      // but first run our Nextflow toList wrapper
+      | vsh_toList.run (
+          fromState: { id, state -> [ id: "run", input: state.output ] },
+          toState: { id, result, state -> result }
+        )
+      | assemble.run(
+          fromState: { id, state -> [ input: state.output ] },
+          toState: { id, result, state -> result }
         )
 
       // Run multiqc
@@ -44,14 +41,13 @@ workflow run_wf {
           auto: [ publish: true ],
           fromState: { id, state ->
             [
-              input: state.aggregated_fastqc_reports,
-              output: "report"
+              input: state.output,
+              output: "report"          // Output directory name
             ]
           },
-          toState: [ "output": "output" ]
+          toState: { id, result, state -> [ output: result.output ] }
         )
 
   emit:
     output_ch
-      | map{ id, state -> [ id, [ output: state.output ] ] }
 }
