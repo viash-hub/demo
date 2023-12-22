@@ -48,7 +48,7 @@ functionality:
     - name: vsh_utils
       type: vsh
       repo: data-intuitive/vsh_utils
-      tag: main
+      tag: v0.1.0
     # - name: local
     #   type: local
 

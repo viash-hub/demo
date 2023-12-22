@@ -3,3 +3,4 @@ testData
 .DS_Store
 work
 output
+target/

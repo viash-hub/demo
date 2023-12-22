@@ -4,8 +4,10 @@ source: src
 target: target
 
 config_mods: |
-  .functionality.version := 'dev'
+  .functionality.version := '0.1.0'
   .functionality.requirements.commands := ['ps']
-  .platforms[.type == 'docker'].namespace_separator := '_'
+  .platforms[.type == 'docker'].target_registry := 'viash-hub.com:5050'
+  .platforms[.type == 'docker'].target_organization := 'data-intuitive/demo'
+  .platforms[.type == 'docker'].target_image_source := 'https://viash-hub.com/data-intuitive/demo'
   .platforms[.type == 'nextflow'].directives.tag := '$id'
   .platforms[.type == 'nextflow'].auto.simplifyOutput := false
